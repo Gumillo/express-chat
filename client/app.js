@@ -8,6 +8,10 @@ const messageContentInput = document.getElementById('message-content');
 
 // Global variables
 let userName = '';
+const socket = io();
+
+// Listen to messages from server
+socket.on('message', ({ author, content }) => addMessage(author, content));
 
 // Login form handler
 function login(e) {
@@ -54,6 +58,7 @@ function sendMessage(e) {
   }
 
   addMessage(userName, content);
+  socket.emit('message', { author: userName, content });
   messageContentInput.value = '';
 }
 
